@@ -1,0 +1,6 @@
+# Fichero .gitignore que incluye ficheros y carpetas que no queremos que sean tenidos en cuenta en nuestro control de versiones.
+# Estos ficheros y carpetas no serán subidos al repositorio de Git.
+
+
+# Ignora toda la carpeta node_modules (ya que esta carpeta se instala con el comando express de express-generator)
+node_modules
