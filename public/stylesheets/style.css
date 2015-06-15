@@ -36,3 +36,9 @@ footer{
 nav span {
 	margin: 0px 10px 0px 0px;
 }
+
+#imgautor{
+	height: 140px;
+	width: 140px;
+	margin: 4px 0px;
+}
