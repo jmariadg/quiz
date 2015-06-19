@@ -42,3 +42,8 @@ nav span {
 	width: 140px;
 	margin: 4px 0px;
 }
+
+.centered {
+	margin-left: auto;
+	margin-right: auto;
+}

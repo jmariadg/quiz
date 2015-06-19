@@ -26,3 +26,8 @@ footer{
 	clear: both;
 	display: block;
 }
+
+.centered {
+	margin-left: auto;
+	margin-right: auto;
+}
