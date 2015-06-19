@@ -13,11 +13,16 @@ router.get('/author', function(req, res){
 	res.render('author', { nombreautor: 'José Mª Domínguez' });
 });
 
+// Autoload de comandos con:quizId
+/* Cargo antes el Load para que cuando se llame alguna
+ * de las rutas /quizes de más abajo el quizId ya esté localizado
+ */
+router.param('quizId', quizController.load);  // autoload :quizId
+
 /* Definición de rutas de /quizes */
 router.get('/quizes', quizController.index);
 router.get('/quizes/:quizId(\\d+)', quizController.show);
 router.get('/quizes/:quizId(\\d+)/answer', quizController.answer);
-
 
 
 
