@@ -33,11 +33,24 @@ exports.answer = function (req, res){
 
 // GET /quizes
 exports.index = function (req, res) {
-	models.Quiz.findAll()
-	.then(function(quizes){
-		res.render('quizes/index.ejs', {quizes: quizes});
-	})
-	.catch(function(error){
-		next(error);
-	})
+	var search = req.query.search;
+	var condicionWhere = "";
+	
+	if(search !== undefined){
+	    search = "%" + search + "%"; // para el inicio y fin :)
+		search = search.replace(" ","%");
+
+		condicionWhere = {where: ["pregunta like ?", search], order: [['pregunta', 'DESC']]};
+
+	    models.Quiz.findAll(condicionWhere).
+	    then(function(quizes){
+	         res.render('quizes/index.ejs', { quizes: quizes });
+	    });
+	}
+	else {
+	    models.Quiz.findAll().then(function (quizes) {
+	    	res.render('quizes/index.ejs', { quizes: quizes });
+	 	}).catch(function(error){next(error);});		
+	}
+
 };
