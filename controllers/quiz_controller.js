@@ -18,7 +18,7 @@ exports.load = function (req, res, next, quizId){
 
 // GET /quizes/:id
 exports.show = function (req, res) {
-	res.render('quizes/show', {quiz: req.quiz});
+	res.render('quizes/show', {quiz: req.quiz, errors: []});
 };
 
 // GET /quizes/answer
@@ -28,7 +28,7 @@ exports.answer = function (req, res){
 	if (req.query.respuesta === req.quiz.respuesta){
 		resultado = 'Correcto';
 	}
-	res.render('quizes/answer', {quiz: req.quiz, respuesta: resultado});
+	res.render('quizes/answer', {quiz: req.quiz, respuesta: resultado, errors: []});
 };
 
 // GET /quizes
@@ -44,12 +44,12 @@ exports.index = function (req, res) {
 
 	    models.Quiz.findAll(condicionWhere).
 	    then(function(quizes){
-	         res.render('quizes/index.ejs', { quizes: quizes });
+	         res.render('quizes/index.ejs', { quizes: quizes, errors: [] });
 	    });
 	}
 	else {
 	    models.Quiz.findAll().then(function (quizes) {
-	    	res.render('quizes/index.ejs', { quizes: quizes });
+	    	res.render('quizes/index.ejs', { quizes: quizes, errors: [] });
 	 	}).catch(function(error){next(error);});		
 	}
 
@@ -64,7 +64,7 @@ exports.new = function (req, res){
 		{pregunta: "Pregunta", respuesta: "Respuesta"}
 	);
 
-	res.render('quizes/new', {quiz: nuevoQuiz});
+	res.render('quizes/new', {quiz: nuevoQuiz, errors: []});
 };
 
 // controlador para POST /quizes/create
@@ -74,7 +74,18 @@ exports.create = function (req, res){
 	// req.body.quiz contendrá los datos enviados desde form.ejs
 	var nuevoQuiz = models.Quiz.build (req.body.quiz);
 
-	// guarda en DB los campos pregunta y respuesta, cuando termina 
-	// redirecciona a la página principal con el listado de preguntas
-	nuevoQuiz.save({fields:["pregunta", "respuesta"]}).then(function(){res.redirect('/quizes');});
+	nuevoQuiz.validate().then(
+		function(err){
+			if (err){
+				res.render('quizes/new', {quiz: nuevoQuiz, errors: err.errors});
+			}
+			else {
+				// guarda en DB los campos pregunta y respuesta, cuando termina 
+				// redirecciona a la página principal con el listado de preguntas
+				nuevoQuiz.save({fields:["pregunta", "respuesta"]}).then(function(){
+					res.redirect('/quizes');
+				});				
+			}
+	});
+	
 };

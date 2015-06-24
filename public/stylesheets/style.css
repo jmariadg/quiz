@@ -37,6 +37,11 @@ nav span {
 	margin: 0px 10px 0px 0px;
 }
 
+#errorMsgs{
+	color: #ff6611;
+	font-size: smaller;
+}
+
 #imgautor{
 	height: 140px;
 	width: 140px;
