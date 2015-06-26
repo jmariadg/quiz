@@ -57,7 +57,6 @@ exports.index = function (req, res) {
 
 
 // controlador para GET /quizes/new
-
 exports.new = function (req, res){
 	// build es un método del ORM sequelize que crea un objeto quiz
 	var nuevoQuiz = models.Quiz.build(
@@ -68,7 +67,6 @@ exports.new = function (req, res){
 };
 
 // controlador para POST /quizes/create
-
 exports.create = function (req, res){
 	// build es un método del ORM sequelize quecrea un objeto quiz.
 	// req.body.quiz contendrá los datos enviados desde form.ejs
@@ -87,5 +85,28 @@ exports.create = function (req, res){
 				});				
 			}
 	});
-	
+};
+
+// GET /quizes/:id/edit
+exports.edit = function (req, res) {
+	var objQuiz = req.quiz; // el objeto quiz de request trae la pregunta yla respuesta
+
+	res.render ('quizes/edit', {quiz: objQuiz, errors: []});
+};
+
+exports.update = function (req, res) {
+	req.quiz.pregunta = req.body.quiz.pregunta;
+	req.quiz.respuesta = req.body.quiz.respuesta;
+
+	req.quiz.validate()
+	.then(function(err){
+		if (err){
+			res.render('quizes/edit', {quiz: req.quiz, errors: err.errors});
+		}
+		else{
+			req.quiz 	
+			.save({fields: ["pregunta", "respuesta"]})	  // save guarda los campos pregunta y respuesta en la BD
+			.then(function(){res.redirect('/quizes')});   // si se graba redirecciona http a la página de listado de preguntas
+		}
+	});
 };
