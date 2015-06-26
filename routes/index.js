@@ -29,6 +29,7 @@ router.get('/quizes/new', quizController.new);				// primitiva para formulario n
 router.post('/quizes/create', quizController.create);		// primitiva para guardar la nueva pregunta
 router.get('/quizes/:quizId(\\d+)/edit', quizController.edit);	// primitiva para el formulario de edición
 router.put('/quizes/:quizId(\\d+)', quizController.update);	// primitiva para la actualización en la base de datos
+router.delete('/quizes/:quizId(\\d+)', quizController.destroy);	// primitiva para borrar una pregunta de la tabla quiz
 
 
 module.exports = router;
