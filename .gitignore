@@ -5,8 +5,8 @@
 # Ignora toda la carpeta node_modules (ya que esta carpeta se instala con el comando express de express-generator)
 node_modules
 
-# Ignora el fichero de base de datos quiz.sqlite
-quiz.sqlite
+# Ignora el fichero de base de datos *.sqlite
+*.sqlite
 
 # Ignora fichero de debug de npm
 npm-debug.log

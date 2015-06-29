@@ -37,12 +37,29 @@ sequelize.sync().then(function() {
 		if (count === 0) {
 			Quiz.create({
 				pregunta: 'Capital de Italia',
-				respuesta: 'Roma'
+				respuesta: 'Roma',
+				tema: 'humanidades'
 			});
 			Quiz.create({
 				pregunta: 'Capital de Portugal',
-				respuesta: 'Lisboa'
-			})			
+				respuesta: 'Lisboa',
+				tema: 'humanidades'			
+			});
+			Quiz.create({
+				pregunta: 'En que año se descubrió el ADN',
+				respuesta: '1869',
+				tema: 'ciencia'		
+			});
+			Quiz.create({
+				pregunta: 'Quién fue el premio Nobel de Medicina en 1906',
+				respuesta: 'Santiago Ramón y Cajal',
+				tema: 'ciencia'		
+			});
+			Quiz.create({
+				pregunta: 'Cuántos bytes tiene 1 Kilobyte',
+				respuesta: '1024',
+				tema: 'tecnologia'		
+			})		
 			.then(function(){console.log('Base de datos inicio')});
 		};
 	});
