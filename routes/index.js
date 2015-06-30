@@ -2,8 +2,9 @@ var express = require('express');
 var router = express.Router();
 
 var quizController = require('../controllers/quiz_controller');
+var commentController = require('../controllers/comment_controller');
 
-/* GET home page. */
+/* GET home page. Página de entrada a la aplicación */
 router.get('/', function(req, res) {
   res.render('index', { title: 'Quiz', errors: [] });
 });
@@ -31,5 +32,7 @@ router.get('/quizes/:quizId(\\d+)/edit', quizController.edit);	// primitiva para
 router.put('/quizes/:quizId(\\d+)', quizController.update);	// primitiva para la actualización en la base de datos
 router.delete('/quizes/:quizId(\\d+)', quizController.destroy);	// primitiva para borrar una pregunta de la tabla quiz
 
+router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);  // primitiva para el formulario nuevo comentario
+router.post('/quizes/:quizId(\\d+)/comments', commentController.create);  // primitiva para guardar el nuevo comentario
 
 module.exports = router;

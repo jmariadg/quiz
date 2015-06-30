@@ -1,7 +1,10 @@
 var path = require('path');
 
-// Postgres DATABASE_URL = postgres://user:passwd@host:port/database
-// Sqlite DATABASE_URL = sqlite://:@:/
+/* Los formatos de la base de dato cuando trabajamos en heroku (Postgres)
+ * y cuando trabajamos en local (Sqlite) es:
+ * Postgres DATABASE_URL = postgres://user:passwd@host:port/database
+ * Sqlite DATABASE_URL = sqlite://:@:/
+ */
 var url = process.env.DATABASE_URL.match(/(.*)\:\/\/(.*?)\:(.*)@(.*)\:(.*)\/(.*)/);
 var DB_name	= (url[6]||null);
 var user	= (url[2]||null);
@@ -25,11 +28,21 @@ var sequelize = new Sequelize (DB_name, user, pwd,
 	 omitNull: true		// solo Postgres
 	});
 
-// Importar la definición de la tabla Quiz en quiz.js
+// Importar la definición de la tabla Quiz de quiz.js
+var quiz_path = path.join(__dirname,'quiz');
+var Quiz = sequelize.import(quiz_path);
 
-var Quiz = sequelize.import(path.join(__dirname,'quiz'));
+// Importar la definición de la tabla Comment de comment.js
+var comment_path = path.join(__dirname,'comment');
+var Comment = sequelize.import(comment_path);
 
-exports.Quiz = Quiz;
+// Para indicar que la relación quiz--comment es 1:N
+// Esta manera de relacionar las tablas hace que se cree un campo QuizId en la tabla Comment que será la foreign key.
+Comment.belongsTo(Quiz);
+Quiz.hasMany(Comment);
+
+exports.Quiz = Quiz;		// exportar tabla Quiz
+exports.Comment = Comment;
 
 // creo e inicializo la tabla de preguntas en DB
 sequelize.sync().then(function() {
