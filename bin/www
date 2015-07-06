@@ -2,8 +2,25 @@
 var debug = require('debug')('quiz');
 var app = require('../app');
 
+// para instalar SSL :
+var fs = require('fs');         // instalamos el paquete fs para gestión de ficheros
+var https = require ('https');  // instalamos el paquete https
+
+// creamos el objeto con la clave privada y el certificado publico x509
+var options = {
+    key: fs.readFileSync('certs/quiz-2015-key.pem').toString(),
+    cert: fs.readFileSync('certs/quiz-2015-cert.pem').toString()
+}
+
+
 app.set('port', process.env.PORT || 3000);
 
 var server = app.listen(app.get('port'), function() {
+  debug('Express server listening on port ' + server.address().port);
+});
+
+// Creamos nuestro servidor HTTPS y lo ponemos a escuchar en el puerto 8443
+var serverSecure = https.createServer(options, app);
+serverSecure.listen(8443, function (){
   debug('Express server listening on port ' + server.address().port);
 });
