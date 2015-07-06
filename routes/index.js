@@ -3,6 +3,7 @@ var router = express.Router();
 
 var quizController = require('../controllers/quiz_controller');
 var commentController = require('../controllers/comment_controller');
+var sessionController = require('../controllers/session_controller');
 
 /* GET home page. Página de entrada a la aplicación */
 router.get('/', function(req, res) {
@@ -20,6 +21,11 @@ router.get('/author', function(req, res){
  * En las llamadas con :quizId(//d+) se utiliza la expresión regular par identifiar el númeroId
  */
 router.param('quizId', quizController.load);  // autoload :quizId
+
+/* Definición de las rutas para la gestión de sesiones */
+router.get('/login', sessionController.new);      // formulario login
+router.post('/login', sessionController.create);  // crear sesión
+router.get('/logout', sessionController.destroy); // destruir sesión
 
 /* Definición de rutas de /quizes */
 router.get('/quizes', quizController.index);

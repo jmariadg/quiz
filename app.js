@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var partials = require('express-partials');
 
 var methodOverride = require('method-override');
+var session = require('express-session');
 
 var routes = require('./routes/index');
 
@@ -25,9 +26,22 @@ app.use(partials());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
+app.use(cookieParser('2015Quiz'));          // añado una semilla para cifrar la cookie
+app.use(session());                         // instalo el middleware session
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Helpers dinamicos
+app.use(function(req, res, next) {
+    // guardar path en session.redir para después del login
+    if (!req.path.match(/\/login|\/logout/)){
+        req.session.redir= req.path;
+    }
+
+    // Para hacer visible req.session en las vistas
+    res.locals.session = req.session;
+    next();
+});
 
 app.use('/', routes);
 
@@ -39,7 +53,6 @@ app.use(function(req, res, next) {
 });
 
 // error handlers
-
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
