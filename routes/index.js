@@ -19,8 +19,11 @@ router.get('/author', function(req, res){
 /* Cargo antes el Load para que cuando se llame alguna
  * de las rutas /quizes de más abajo el quizId ya esté localizado
  * En las llamadas con :quizId(//d+) se utiliza la expresión regular par identifiar el númeroId
+ *
+ * También incluyo un autoload para commentId
  */
 router.param('quizId', quizController.load);  // autoload :quizId
+router.param('commentId', commentController.load) // autoload :commentId
 
 /* Definición de las rutas para la gestión de sesiones */
 router.get('/login', sessionController.new);      // formulario login
@@ -40,7 +43,9 @@ router.get('/quizes/:quizId(\\d+)/edit', sessionController.loginRequired, quizCo
 router.put('/quizes/:quizId(\\d+)', sessionController.loginRequired, quizController.update);	// primitiva para la actualización en la base de datos
 router.delete('/quizes/:quizId(\\d+)', sessionController.loginRequired, quizController.destroy);	// primitiva para borrar una pregunta de la tabla quiz
 
+/* Definición de rutas para los comentarios */
 router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);  // primitiva para el formulario nuevo comentario
 router.post('/quizes/:quizId(\\d+)/comments', commentController.create);  // primitiva para guardar el nuevo comentario
+router.put('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish', sessionController.loginRequired, commentController.publish); // primitiva para publicar un comentario ya creado en la BD
 
 module.exports = router;
