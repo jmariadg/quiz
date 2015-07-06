@@ -32,11 +32,13 @@ router.get('/quizes', quizController.index);
 router.get('/quizes/:quizId(\\d+)', quizController.show);
 router.get('/quizes/:quizId(\\d+)/answer', quizController.answer);
 
-router.get('/quizes/new', quizController.new);				// primitiva para formulario nueva pregunta
-router.post('/quizes/create', quizController.create);		// primitiva para guardar la nueva pregunta
-router.get('/quizes/:quizId(\\d+)/edit', quizController.edit);	// primitiva para el formulario de edición
-router.put('/quizes/:quizId(\\d+)', quizController.update);	// primitiva para la actualización en la base de datos
-router.delete('/quizes/:quizId(\\d+)', quizController.destroy);	// primitiva para borrar una pregunta de la tabla quiz
+
+/* Definiciones de rutas para crear, modificar y borrar preguntas */
+router.get('/quizes/new', sessionController.loginRequired, quizController.new);				// primitiva para formulario nueva pregunta
+router.post('/quizes/create', sessionController.loginRequired, quizController.create);		// primitiva para guardar la nueva pregunta
+router.get('/quizes/:quizId(\\d+)/edit', sessionController.loginRequired, quizController.edit);	// primitiva para el formulario de edición
+router.put('/quizes/:quizId(\\d+)', sessionController.loginRequired, quizController.update);	// primitiva para la actualización en la base de datos
+router.delete('/quizes/:quizId(\\d+)', sessionController.loginRequired, quizController.destroy);	// primitiva para borrar una pregunta de la tabla quiz
 
 router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);  // primitiva para el formulario nuevo comentario
 router.post('/quizes/:quizId(\\d+)/comments', commentController.create);  // primitiva para guardar el nuevo comentario

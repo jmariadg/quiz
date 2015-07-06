@@ -1,3 +1,13 @@
+// Middleware de autorización de acceso HTTP restringido
+exports.loginRequired = function(req, res, next){
+  if (req.session.user){  // si el usuario está autenticado
+    next();    // pasamos el control al siguiente middleware la ruta definida en routes/index.js
+  }
+  else {
+    res.redirect('/login');
+  }
+}
+
 // GET /login   -- formulario de login
 exports.new = function (req, res) {
   // cargo los errores ocurridos o los inicializo caso de no haber error
