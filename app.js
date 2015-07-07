@@ -31,6 +31,23 @@ app.use(session());                         // instalo el middleware session
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// función autologout para la sesión.
+app.use(function(req, res, next){
+    // timeout de medio minuto que los paso a milisegundos
+    var timeoutSession = 0.5 * 60 * 1000;
+    if (req.session.user) { // si hay session de usuario
+        if (Date.now()-req.session.user.ultimoAcceso > timeoutSession){
+            delete req.session.user;
+        }
+        else {
+            req.session.user.ultimoAcceso = Date.now();     // guardo el tiempo del nuevo acceso
+        }
+    }
+    next();
+});
+
+
 // Helpers dinamicos
 app.use(function(req, res, next) {
     // guardar path en session.redir para después del login
@@ -43,7 +60,9 @@ app.use(function(req, res, next) {
     next();
 });
 
+
 app.use('/', routes);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

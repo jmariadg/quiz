@@ -2,7 +2,7 @@
   Pregunta:
   <br>
   <%= quiz.pregunta %>
-  <input type="text" name="respuesta" value="introduzca respuesta"/>
+  <input type="text" name="respuesta" placeholder="introduzca respuesta"/>
   <input type="submit" value="Enviar"/>
 </form>
 
@@ -13,12 +13,31 @@
 <p><strong>Comentarios:</strong></p>
 <%for(index in quiz.Comments){%>
   <%if(quiz.Comments[index].publicado || session.user){%>
+
+  <!--
+    Error en recirect con POST
+    Comento este form ya que haciendo uso de router.put para publicar el comentario aparece un error cuando tras :
+    - Autenticarme
+    - Cargar una pregunta con comentarios pendientes de publicar
+    - Esperar a que transcurra el tiempo de logout de session
+    - Pulsar el botón publicar
+    - Aparece nuevamente pantalla de autenticación.
+    - Introduzco datos de login válidos y aparece un error
+    El error se debe a que redirect parece ser que utiliza el método GET y yo tengo definido router.put()
+    que se renombre desde el formulario llamado con el método POST
+    Ver comentario routes/index.js
     <form method="post" action="/quizes/<%= quiz.id %>/comments/<%= quiz.Comments[index].id%>/publish?_method=put">
+  -->
+
       <p>- <%= quiz.Comments[index].texto %>
         <%if(session.user && !quiz.Comments[index].publicado){%>
-          <button>Publicar</button>
+          <a href="/quizes/<%= quiz.id %>/comments/<%= quiz.Comments[index].id%>/publish"><button>Publicar</button></a>
         <%}%>
-      </p>  
+      </p>
+    
+  <!--
     </form>
+  -->
+
   <%}%>
 <%}%>

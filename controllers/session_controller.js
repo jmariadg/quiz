@@ -27,11 +27,11 @@ exports.create = function(req, res) {
     if (error) { // si hay error retornamos mensajes de error de sesión
       req.session.error= [{"message": 'Se ha producido un error: '+error}];
       res.redirect("/login");
-      return
+      return;
     }
 
     // si no hay error creo la sesión del usuario
-    req.session.user = {id: user.id, username: user.username};
+    req.session.user = {id: user.id, username: user.username, ultimoAcceso: Date.now()};    // guardo los datos del usuario y la hora del último acceso
     res.redirect(req.session.redir.toString()); // redirect al path anterior al login
   });
 };

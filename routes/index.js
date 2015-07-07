@@ -46,6 +46,12 @@ router.delete('/quizes/:quizId(\\d+)', sessionController.loginRequired, quizCont
 /* Definición de rutas para los comentarios */
 router.get('/quizes/:quizId(\\d+)/comments/new', commentController.new);  // primitiva para el formulario nuevo comentario
 router.post('/quizes/:quizId(\\d+)/comments', commentController.create);  // primitiva para guardar el nuevo comentario
-router.put('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish', sessionController.loginRequired, commentController.publish); // primitiva para publicar un comentario ya creado en la BD
+router.get('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish', sessionController.loginRequired, commentController.publish); // primitiva para publicar un comentario ya creado en la BD
+/* Error en recirect con POST
+ * al hacer uso de PUT e intentar aplicar la interfaz REST aparece un error ya que se redirecciona con GET en vez de POST y sobre escribir el método a put
+ * Ver comentario /quizes/show.ejs
+ * router.put('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish', sessionController.loginRequired, commentController.publish); // primitiva para publicar un comentario ya creado en la BD
+*/
+
 
 module.exports = router;
